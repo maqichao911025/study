@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        canvas {
+            margin-left: 200px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<canvas width="800" height="600"></canvas>
+</body>
+<script>
+  
+    var canvas = document.querySelector("canvas");
+ 
+    function F1(centerX,centerY){
+        this.ctx = canvas.getContext("2d");
+        this.bigR = 69;
+        this.smallR = 90;
+        this.centerX = centerX;
+        this.centerY = centerY;
+        this.r1 = 50;
+        this.r2 = 10;
+        this.draw();
+    };
+    
+    F1.prototype = {
+        constructor:F1,
+        draw: function () {
+            var ctx = this.ctx;
+            ctx.save();
+            ctx.beginPath();
+            this.drawC1();
+            this.drawsmall(0);
+            this.drawsmall(Math.PI/3);
+            this.drawsmall(2*Math.PI/3);
+            this.drawC2();
+            this.drawC3();
+            this.drawline(0);
+            this.drawline(Math.PI/3);
+            this.drawline(2*Math.PI/3);
+            ctx.restore();
+        },
+        drawC1: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.arc(this.centerX,this.centerY,60,0,2*Math.PI);
+            ctx.fill();
+            ctx.restore();
+        },
+        drawsmall:function(angle){
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle);
+            var y = this.centerY + this.bigR*Math.sin(angle);
+            ctx.arc(x,y,this.smallR,angle+Math.PI-9*Math.PI/40,angle+Math.PI+9*Math.PI/40);
+            ctx.closePath()
+            ctx.fillStyle = "red";
+            ctx.fill();
+
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle+Math.PI);
+            var y = this.centerY + this.bigR*Math.sin(angle+Math.PI);
+
+            ctx.arc(x,y,this.smallR,angle-9*Math.PI/40,angle+9*Math.PI/40);
+
+            ctx.closePath()
+            ctx.fill();
+
+            ctx.restore();
+        },
+        drawC2: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            ctx.moveTo(this.centerX + this.r1*Math.cos(-Math.PI/2),this.centerY + this.r1*Math.sin(-Math.PI/2));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4),this.centerY + this.r2*Math.sin(-Math.PI/4));
+            ctx.lineTo(this.centerX + this.r1*Math.cos(-Math.PI/2+2*Math.PI/3),this.centerY + this.r1*Math.sin(-Math.PI/2+2*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4+2*Math.PI/3),this.centerY + this.r2*Math.sin(-Math.PI/4+2*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r1*Math.cos(-Math.PI/2+4*Math.PI/3),this.centerY +this.r1*Math.sin(-Math.PI/2+4*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4+4*Math.PI/3),this.centerY + this.r2*Math.sin(-Math.PI/4+4*Math.PI/3));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        },
+        drawC3: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            ctx.arc(this.centerX,this.centerY,this.r2-2,0,2*Math.PI);
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.restore();
+        },
+        drawline:function(angle){
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle);
+            var y = this.centerY + this.bigR*Math.sin(angle);
+            ctx.arc(x,y,this.smallR,angle+Math.PI-9*Math.PI/40,angle+Math.PI+9*Math.PI/40);
+            ctx.stroke();
+
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle+Math.PI);
+            var y = this.centerY + this.bigR*Math.sin(angle+Math.PI);
+
+            ctx.arc(x,y,this.smallR,angle-9*Math.PI/40,angle+9*Math.PI/40);
+            ctx.stroke();
+            ctx.restore();
+        },
+    };
+
+    function F2(centerX,centerY){
+        this.ctx = canvas.getContext("2d");
+        this.bigR = 69;
+        this.smallR = 90;
+        this.centerX = centerX;
+        this.centerY = centerY;
+        this.r1 = 50;
+        this.r2 = 10;
+        this.draw();
+    };
+
+    F2.prototype = {
+        constructor:F1,
+        draw: function () {
+            var ctx = this.ctx;
+            ctx.save();
+            ctx.beginPath();
+            this.drawC1();
+            this.drawsmall(0);
+            this.drawsmall(Math.PI/3);
+            this.drawsmall(2*Math.PI/3);
+//            this.drawC2();
+            this.drawC3();
+            this.drawline(0);
+            this.drawline(Math.PI/3);
+            this.drawline(2*Math.PI/3);
+            ctx.restore();
+        },
+        drawC1: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.arc(this.centerX,this.centerY,60,0,2*Math.PI);
+            ctx.fill();
+            ctx.restore();
+        },
+        drawsmall:function(angle){
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle);
+            var y = this.centerY + this.bigR*Math.sin(angle);
+            ctx.arc(x,y,this.smallR,angle+Math.PI-9*Math.PI/40,angle+Math.PI+9*Math.PI/40);
+            ctx.closePath()
+            ctx.fillStyle = "red";
+            ctx.fill();
+
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle+Math.PI);
+            var y = this.centerY + this.bigR*Math.sin(angle+Math.PI);
+
+            ctx.arc(x,y,this.smallR,angle-9*Math.PI/40,angle+9*Math.PI/40);
+
+            ctx.closePath()
+            ctx.fill();
+
+            ctx.restore();
+        },
+        drawC2: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            ctx.moveTo(this.centerX + this.r1*Math.cos(-Math.PI/2),this.centerY + this.r1*Math.sin(-Math.PI/2));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4),this.centerY + this.r2*Math.sin(-Math.PI/4));
+            ctx.lineTo(this.centerX + this.r1*Math.cos(-Math.PI/2+2*Math.PI/3),this.centerY + this.r1*Math.sin(-Math.PI/2+2*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4+2*Math.PI/3),this.centerY + this.r2*Math.sin(-Math.PI/4+2*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r1*Math.cos(-Math.PI/2+4*Math.PI/3),this.centerY +this.r1*Math.sin(-Math.PI/2+4*Math.PI/3));
+            ctx.lineTo(this.centerX + this.r2*Math.cos(-Math.PI/4+4*Math.PI/3),this.centerY + this.r2*Math.sin(-Math.PI/4+4*Math.PI/3));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        },
+        drawC3: function () {
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            ctx.arc(this.centerX,this.centerY,this.r2-2,0,2*Math.PI);
+            ctx.fillStyle = "#000";
+            ctx.fill();
+            ctx.restore();
+        },
+        drawline:function(angle){
+            var ctx = this.ctx;
+            ctx.save()
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle);
+            var y = this.centerY + this.bigR*Math.sin(angle);
+            ctx.arc(x,y,this.smallR,angle+Math.PI-9*Math.PI/40,angle+Math.PI+9*Math.PI/40);
+            ctx.stroke();
+
+            ctx.beginPath();
+            var x = this.centerX + this.bigR*Math.cos(angle+Math.PI);
+            var y = this.centerY + this.bigR*Math.sin(angle+Math.PI);
+
+            ctx.arc(x,y,this.smallR,angle-9*Math.PI/40,angle+9*Math.PI/40);
+            ctx.stroke();
+            ctx.restore();
+        },
+    };
+    f1 = new F1(200,300);
+    f2 = new F2(400,300);
+
+//    var i = 0;
+//    var timer = setInterval(function () {
+//        var ctx = canvas.getContext("2d");
+//        ctx.clearRect(0,0,canvas.width,canvas.hight);
+//        if(i%2==0){
+//            f1 = new F1(200,300);
+//        }else{
+//            f2 = new F2(200,300);
+//        }
+//        i++;
+//    },1000);
+
+</script>
+</html>

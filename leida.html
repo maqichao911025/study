@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雷达图</title>
+    <style>
+        #ctx1, #ctx2 {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div id="ctx1">
+
+    </div>
+    <div id="ctx2">
+
+    </div>
+</body>
+<script>
+
+    function leidatu(data,id,width){
+        this.data = data;
+        this.id = id;
+        this.width = width;
+        this.center = width/2; //中心
+        this.count = this.data.length;// 边数
+        this.radius = width/2-width/5; // 直径
+        this.angle = Math.PI*2/this.count; // 弧度
+        this.init();  // 页面生成
+
+    }
+
+    leidatu.prototype = {
+        constructor:leidatu,
+
+        init: function () {
+            this.renderDom();
+            this.drawPolygon(this.ctx);// 绘制多边形
+            this.drawLines(this.ctx);  // 顶点连线
+            this.drawRegion(this.ctx); // 绘制数据区域
+            this.drawText(this.ctx);  // 绘制文本
+            this.drawCircle(this.ctx); // 绘制顶点
+        }, // 页面生成方法闭合
+
+        renderDom: function () {
+            var canvas = document.createElement('canvas');
+            var parent = document.getElementById(this.id);
+            parent.appendChild(canvas);
+            canvas.height = this.width;
+            canvas.width = this.width;
+            this.ctx = canvas.getContext("2d");
+        },  // 添加canvas方法闭合
+
+        drawPolygon: function (ctx) {
+            ctx.save();
+            var r =this.radius/10;
+            for(var i=0; i<10; i++){
+                ctx.beginPath();
+                currR = r*(i+1);
+                for(var j=0; j<this.count;j++){
+                    x = this.center+currR*Math.cos(this.angle*j);
+                    y =this.center+currR*Math.sin(this.angle*j);
+                    ctx.lineTo(x,y)
+                };
+                ctx.closePath();
+                ctx.stroke();
+            }
+            ctx.restore();
+        }, // 绘制多边形方法闭合
+
+        drawLines: function (ctx) {
+            ctx.save();
+            ctx.beginPath();
+            for(var i=0;i<this.count;i++){
+                var x = this.center+currR*Math.cos(this.angle*i);
+                var y = this.center+currR*Math.sin(this.angle*i);
+                ctx.moveTo(this.center,this.center);
+                ctx.lineTo(x,y);
+            }
+            ctx.stroke();
+            ctx.restore();
+        },  //  顶点连线方法闭合
+
+        drawRegion: function (ctx) {
+            ctx.save();
+            ctx.beginPath();
+            for(var i=0;i<this.count;i++){
+                var x = this.center+this.radius*Math.cos(this.angle*i)*this.data[i].number/100;
+                var y = this.center+this.radius*Math.sin(this.angle*i)*this.data[i].number/100;
+                ctx.lineTo(x,y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = "rgba(8,136,38,0.8)";
+            ctx.fill();
+            ctx.restore();
+        }, // 数据区域绘制方法闭合
+
+        drawText: function (ctx) {
+            ctx.save();
+            var fontSize = this.center/12;
+            ctx.font = fontSize+"px Microsoft Yahei";
+            for(var i=0; i<this.count; i++){
+                var x = this.center+this.radius*Math.cos(this.angle*i);
+                var y = this.center+this.radius*Math.sin(this.angle*i);
+                if(this.angle*i>=0 && this.angle*i<=Math.PI/2){
+                    ctx.fillText(this.data[i].name,x,y+fontSize);
+                }else if(this.angle*i>Math.PI/2 && this.angle*i<=Math.PI){
+                    ctx.fillText(this.data[i].name,x - ctx.measureText(data[i].name).width,y+fontSize);
+                }else if(this.angle*i>Math.PI && this.angle*i<=Math.PI*3/2){
+                    ctx.fillText(this.data[i].name,x - ctx.measureText(this.data[i].name).width,y);
+                }else{
+                    ctx.fillText(this.data[i].name,x,y);
+                }
+            }
+            ctx.fillText("马启超",fontSize*2,fontSize*2)
+            ctx.restore();
+        }, // 绘制文本方法闭合
+
+        drawCircle: function (ctx) {
+            ctx.save();
+            var r = this.center / 100;
+            for(var i = 0; i < this.count; i ++){
+                var x = this.center + this.radius * Math.cos(this.angle * i) * this.data[i].number / 100;
+                var y = this.center + this.radius * Math.sin(this.angle * i) * this.data[i].number / 100;
+
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+                ctx.fill();
+            }
+            ctx.restore();
+        } // 绘制顶点方法闭合
+
+    }  //原型对象闭合
+
+//    调用
+    var data = [
+                {name : "Html+css",number: 95},  // 错误  把对象中的  ：  写成了 =
+                {name:"Javascript",number: 90},
+                {name:'H5C3',number: 95},
+                {name:'jQuery',number: 85},
+                {name:'移动web',number: 89},
+                {name:'Ajax、PHP',number: 75},
+                {name:'面向对象',number: 92},
+                {name:'bootstrap框架',number: 83}
+    ];
+    var data1 = [
+                {name:"力量",number: 90}, 
+                {name:"智力",number: 70},
+                {name:'体力',number: 95},
+                {name:'防御',number: 85},
+                {name:'攻击',number: 95},
+                {name:'敏捷',number: 75}
+    ];
+    //  构造函数有三个参数 第一个参数为  要传入的数据的对象 第二个参数为 父元素的id 第三个为画布的宽高
+    var p1 = new leidatu(data,"ctx1",600);  // 传参数时  字符串加引号
+    var p1 = new leidatu(data1,"ctx2",400);
+
+
+</script>
+</html>
